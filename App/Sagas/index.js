@@ -1,32 +1,26 @@
-import { takeLatest, all } from 'redux-saga/effects'
-import API from '../Services/Api'
-import FixtureAPI from '../Services/FixtureApi'
-import DebugConfig from '../Config/DebugConfig'
+import {takeLatest, all} from 'redux-saga/effects'
 
 /* ------------- Types ------------- */
 
-import { StartupTypes } from '../Redux/StartupRedux'
-import { GithubTypes } from '../Redux/GithubRedux'
+import {loginTypes} from '../Redux/LoginRedux'
 
 /* ------------- Sagas ------------- */
 
-import { startup } from './StartupSagas'
-import { getUserAvatar } from './GithubSagas'
-
-/* ------------- API ------------- */
-
-// The API we use is only used from Sagas, so we create it here and pass along
-// to the sagas which need it.
-const api = DebugConfig.useFixtures ? FixtureAPI : API.create()
-
+import {validateUser, packageList, checkIn} from './LoginSaga'
+// registerUser, getLoginData, 
 /* ------------- Connect Types To Sagas ------------- */
 
 export default function * root () {
   yield all([
     // some sagas only receive an action
-    takeLatest(StartupTypes.STARTUP, startup),
-
+    // takeLatest(StartupTypes.STARTUP, startup),
+    // takeLatest(StartupTypes.GET_LOGIN_DETAILS_REQUEST, startup),
+    // takeLatest(loginTypes.REGISTER_USER_REQUEST, registerUser),
+    // takeLatest(loginTypes.GET_LOGIN_DETAILS_REQUEST, getLoginData),
+    takeLatest(loginTypes.GET_VALID_USER_REQUEST, validateUser),
+    takeLatest(loginTypes.GET_PACKAGE_LIST_REQUEST, packageList),
+    takeLatest(loginTypes.GET_CHECK_IN_REQUEST, checkIn)
     // some sagas receive extra parameters in addition to an action
-    takeLatest(GithubTypes.USER_REQUEST, getUserAvatar, api)
+    // takeLatest(GithubTypes.USER_REQUEST, getUserAvatar, api)
   ])
 }
