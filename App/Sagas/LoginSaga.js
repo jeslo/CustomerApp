@@ -69,13 +69,17 @@ export function * validateUser ({params}) {
     .then(r => r)
     .catch(e => e)
   if (result.Flag === 1 && _.get(result, 'Result.guId', '')) {
+    yield put(Actions.getValidUserSuccess(result.Result))
     yield put(
       Actions.getPackageListRequest({
         ContactId: _.get(result, 'Result.guId', ''),
       }),
     )
-    yield put(NavigationActions.navigate({routeName: 'CheckinScreen'}))
-  } else return yield put(Actions.getValidUserFailure(result))
+    //yield put(NavigationActions.navigate({routeName: 'CheckinScreen'}))
+  } 
+  else 
+  return yield put(Actions.getValidUserFailure(result.Result))
+  
 }
 
 export function * packageList ({params}) {
@@ -94,7 +98,7 @@ export function * packageList ({params}) {
   if (result.Flag === 1) {
     yield put(Actions.getPackageListSuccess(result))
   } else {
-    yield put(Actions.getPackageListFailure(result))
+    yield put(Actions.getPackageListFailure(result.Result))
   }
 }
 export function * checkIn ({params}) {

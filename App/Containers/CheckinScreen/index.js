@@ -56,8 +56,10 @@ class CheckinScreen extends React.Component {
               {' '}
               {_.get(item, 'DueAmount', 'No Due')}
             </Text>
+            <TextButton buttonName= 'CHECKIN'>
+
+            </TextButton>
           </View>
-          <View style={{backgroundColor: 'red', flex: 1}} />
         </TouchableOpacity>
       </View>
     )

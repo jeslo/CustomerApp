@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, Text, TouchableOpacity, Image, ScrollView} from 'react-native'
+import {View, Text, TouchableOpacity, Image, ScrollView,SafeAreaView,BackHandler,FlatList} from 'react-native'
 import {connect} from 'react-redux'
 import Actions from '../../Redux/LoginRedux'
 // import {createStore} from 'redux'
@@ -10,11 +10,10 @@ import TextButton from '../../Components/Button/index'
 import InputText from '../../Components/InputText'
 import Loader from '../../Components/Loader'
 import OptionalView from '../../Components/OptionalView'
-import {email, tenNumber, name, empty} from '../../Transforms/ConvertFromKelvin'
-// import {email, tenNumber, name} from '../../Transforms'
-
-// Styles
+import {tenNumber} from '../../Transforms/ConvertFromKelvin'
+import _ from 'lodash'
 import {styles} from './styles'
+import { o } from 'ramda'
 
 // const persistConfig = {
 //   key: 'root',
@@ -24,6 +23,26 @@ import {styles} from './styles'
 // const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 class LaunchScreen extends React.Component {
+  state = {
+    show: false,
+    item: {},
+  }
+  onBackPress = () => {
+    return true
+  }
+
+  componentDidMount () {
+    BackHandler.addEventListener('hardwareBackPress', this.onBackPress)
+  }
+
+  componentWillUnmount () {
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackPress)
+  }
+
+  logOut = () => {
+    this.props.navigation.goBack()
+    this.props.logOut()
+  }
   fetchLogin = () => {
     this.props.validateUser({
         phone: this.props.phone,
@@ -107,16 +126,78 @@ class LaunchScreen extends React.Component {
 //   }
 
   onChangePhoneNumber = text => {
-    this.props.updateFirstLevelKey('loginFailed', '')
+    this.props.updateFirstLevelKey('validationFailed', '')
 
     this.props.updatePhoneNumber('value', text)
   }
+  renderFailureCard = () => {
+    if (!this.props.packageEmpt) return null
+    return (
+      <View
+        style={{
+          backgroundColor: 'orange',
+          borderRadius: 10,
+          alignSelf: 'center',
+          paddingVertical: 30,
+          paddingHorizontal: 20,
+          margin: 20,
+        }}>
+        <Text style={styles.contactRbcText}>
+          Hi please contact RBC team to subscribe your packages
+        </Text>
+      </View>
+    )
+  }
+  renderPackaageList = () => {
+    if (this.props.packageEmpty) return null
+    return (
+      <FlatList style={{
+        borderTopRightRadius: 50,
+        borderBottomRightRadius: 50
+      }}
+        
+      data={this.props.packageList} renderItem={this.renderItem} />
+    )
+  }
+  renderItem = ({item}) => {
+    return (
+      <View key={item.productName} style={{backgroundColor: '#e4e4e4'}}>
+        {/* <TouchableOpacity
+          onPress={() =>
+            this.setState({
+              show: true,
+              item,
+            })
+          }> */}
+          <View style={styles.cellItem}>
+            <Text style={styles.title}> {_.get(item, 'productName', '')}</Text>
+            <Text style={styles.title}>
+              {' '}
+              {_.get(item, 'DueAmount', 'No Due')}
+            </Text>
+            <View 
+            style={{
+              paddingBottom: 10,
+             marginRight: 0,
+             alignSelf: 'flex-end'
+            }}
+            >
+            <TextButton style={styles.checkinButton}
+            buttonName= 'CHECKIN'>
 
+            </TextButton>
+            </View>
+          </View>
+        {/* </TouchableOpacity> */}
+      </View>
+    )
+  }
   render () {
     console.tron.log(' this.props.', this.props)
     return (
       <View style={{flex: 1}}>
         <ScrollView>
+          <OptionalView hide={this.props.validPage}>
           <View style={styles.conatiner}>
             {/* <Image
               source={require('./Images/RBClogo.jpg')}
@@ -175,8 +256,8 @@ class LaunchScreen extends React.Component {
                 />
               {/* </OptionalView> */}
 
-              <OptionalView hide={!this.props.loginFailed}>
-                <Text style={styles.errorText}>{this.props.loginFailed}</Text>
+              <OptionalView hide={!this.props.validationFailed}>
+                <Text style={styles.errorText}>{this.props.validationFailed}</Text>
               </OptionalView>
               <OptionalView hide={!this.props.loader}>
                   <Loader />
@@ -204,6 +285,18 @@ class LaunchScreen extends React.Component {
               )} */}
             </View>
           </View>
+          </OptionalView>
+
+          <OptionalView hide={!this.props.validPage}>
+          <SafeAreaView>
+        <View style={{width: 100, paddingLeft: 10, paddingBottom: 10}}>
+          <TextButton buttonName='Logout' onPress={this.logOut} />
+        </View>
+        <this.renderFailureCard />
+        <this.renderPackaageList />
+        
+      </SafeAreaView>
+          </OptionalView>
         </ScrollView>
       </View>
     )
@@ -214,6 +307,9 @@ const mapStateToProps = state => ({
   isLogin: state.login.isLogin,
   loginFailed: state.login.loginFailed,
   loader: state.login.loader,
+  validationFailed: state.login.validationFailed,
+  validPage: state.login.validPage,
+  packageEmpty: state.login.packageEmpty,
 //   displayName: state.login.displayName.value,
 //   displayNameError: state.login.displayName.error,
 //   userName: state.login.userName.value,
@@ -224,6 +320,13 @@ const mapStateToProps = state => ({
 //   emailError: state.login.email.error,
   phone: state.login.phone.value,
   phoneError: state.login.phone.error,
+  packageList: _.get(state, 'login.packagedetails.Packagedata.packageItems', []),
+  productId: _.get(state.item, 'productId', ''),
+  gudid: _.get(state, 'login.packagedetails.Packagedata.guId', ''),
+  UserName: _.get(state, 'login.packagedetails.Packagedata.userName', ''),
+  Phone: _.get(state, 'login.packagedetails.Packagedata.phone', ''),
+
+  
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -240,6 +343,7 @@ const mapDispatchToProps = dispatch => ({
   //updateEmailId: (key, value) => dispatch(Actions.getUpdateEmail(key, value)),
   updateFirstLevelKey: (key, value) =>
     dispatch(Actions.updateFirstLevelKey(key, value)),
+    logOut: () => dispatch(Actions.logoutUser()),
 
   setLoginStatus: value => () => dispatch(Actions.setLoginFlag(value)),
 })

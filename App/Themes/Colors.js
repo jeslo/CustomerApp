@@ -21,7 +21,11 @@ const colors = {
   eggplant: '#251a34',
   border: '#483F53',
   banner: '#5F3E63',
-  text: '#E0D7E5'
+  text: '#E0D7E5',
+  rbcblue: '#56CBF6',
+  rbcwhite: '#ffffff',
+  rbcgreen: '#A3CB37',
+  buttonColor: '#0e73bc'
 }
 
 export default colors

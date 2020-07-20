@@ -14,11 +14,11 @@ const {Types, Creators} = createActions({
 
   getValidUserRequest: ['params'],
   getValidUserSuccess: ['data'],
-  getValidUserFailure: [],
+  getValidUserFailure: ['data'],
 
   getPackageListRequest: ['params'],
   getPackageListSuccess: ['data'],
-  getPackageListFailure: [],
+  getPackageListFailure: ['data'],
 
   getCheckInRequest: ['params'],
   getCheckInSuccess: ['data'],
@@ -49,10 +49,11 @@ export const INITIAL_STATE = Immutable({
   packagedetails: {},
   checkinDetails: {},
 
-  loginFailed: '',
-  registrationFailed: false,
-  validationFailed: false,
+//   loginFailed: '',
+//   registrationFailed: false,
+  validationFailed: '',
   packageGetFailed: false,
+  validPage: false,
   isLogin: true,
   packageEmpty: false,
   popupFlag: false,
@@ -115,40 +116,46 @@ export const setLoginOrSignupLoader = (state, {data}) =>
 export const handleValidUserSuccess = (state, {data}) =>
   state.merge({
     validUserDetails: data,
-    loaderFlag:false
+    loader: false
   })
 export const handleValidUserFailure = (state, {data}) =>
   state.merge({
-    validationFailed: true,
     packageEmpty: true,
+    validationFailed: data,
+    validPage: false,
+    loader: false
   })
 
 export const handlePackageListSuccess = (state, {data}) =>
   state.merge({
     packagedetails: data,
+    validPage:true,
     packageEmpty: false,
-    loaderFlag:false
+    loader: false
   })
 export const handlePackageListFailure = (state, {data}) =>
   state.merge({
     packageGetFailed: true,
+    validationFailed: data,
+    validPage:false,
     packageEmpty: true,
+    loader: false
   })
 
 export const handleCheckInSuccess = (state, {data}) =>
   state.merge({
     checkinDetails: data,
-    loaderFlag:false
+    loader: false
   })
 export const handleCheckInFailure = (state, {data}) => state.merge({})
 
-export const handleupdateDisplayName = (state, {key, value}) =>
-  state.merge({
-    displayName: state.displayName.merge({
-      [key]: value,
-      error: key === 'error' ? value : '',
-    }),
-  })
+// export const handleupdateDisplayName = (state, {key, value}) =>
+//   state.merge({
+//     displayName: state.displayName.merge({
+//       [key]: value,
+//       error: key === 'error' ? value : '',
+//     }),
+//   })
 // export const handleupdateUserName = (state, {key, value}) =>
 //   state.merge({
 //     userName: state.userName.merge({
@@ -175,6 +182,7 @@ export const handleupdatePhone = (state, {key, value}) =>
     phone: state.phone.merge({
       [key]: value,
       error: key === 'error' ? value : '',
+      validationFailed: ''
     }),
   })
 export const handleGetLogin = (state, {status}) =>
@@ -210,6 +218,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_PACKAGE_LIST_REQUEST]: setLoginOrSignupLoader,
   [Types.GET_PACKAGE_LIST_SUCCESS]: handlePackageListSuccess,
   [Types.GET_PACKAGE_LIST_FAILURE]: handlePackageListFailure,
+
   [Types.GET_CHECK_IN_REQUEST]: setLoginOrSignupLoader,
   [Types.GET_CHECK_IN_SUCCESS]: handleCheckInSuccess,
   [Types.GET_CHECK_IN_FAILURE]: handleCheckInFailure,

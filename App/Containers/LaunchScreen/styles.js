@@ -4,9 +4,9 @@ export const styles = StyleSheet.create({
   conatiner: {
     // flex: 1,
     // padding: 20,
-    backgroundColor: '#e4e4e4',
+    backgroundColor: '#ffffff',
     alignItems: 'center',
-    marginBottom: 0,
+    marginTop: 250
   },
   scroll: {
     backgroundColor: Colors.cloud,
@@ -52,4 +52,11 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     overflow: 'hidden'
   },
+  checkinButton: {
+    backgroundColor: 'red',
+    borderRadius: 51,
+    width: 80,
+    height:80,
+    paddingBottom: 10 
+  }
 })
