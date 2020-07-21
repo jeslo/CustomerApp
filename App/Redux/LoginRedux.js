@@ -52,7 +52,7 @@ export const INITIAL_STATE = Immutable({
 //   loginFailed: '',
 //   registrationFailed: false,
   validationFailed: '',
-  packageGetFailed: false,
+  packageGetFailed: '',
   validPage: false,
   isLogin: true,
   packageEmpty: false,
@@ -135,8 +135,7 @@ export const handlePackageListSuccess = (state, {data}) =>
   })
 export const handlePackageListFailure = (state, {data}) =>
   state.merge({
-    packageGetFailed: true,
-    validationFailed: data,
+    packagedetails: data,
     validPage:false,
     packageEmpty: true,
     loader: false

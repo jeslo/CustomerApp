@@ -77,9 +77,10 @@ export function * validateUser ({params}) {
     )
     //yield put(NavigationActions.navigate({routeName: 'CheckinScreen'}))
   } 
+  else if (result.Flag === 3)
+  return yield put(Actions.getValidUserFailure(result.Result))
   else 
   return yield put(Actions.getValidUserFailure(result.Result))
-  
 }
 
 export function * packageList ({params}) {
@@ -95,10 +96,10 @@ export function * packageList ({params}) {
     .then(resp => resp.json())
     .then(r => r)
     .catch(e => e)
-  if (result.Flag === 1) {
+  if ((result.Flag == 1) || (result.Flag == 4)) {
     yield put(Actions.getPackageListSuccess(result))
   } else {
-    yield put(Actions.getPackageListFailure(result.Result))
+    yield put(Actions.getPackageListFailure(result))
   }
 }
 export function * checkIn ({params}) {

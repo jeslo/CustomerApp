@@ -14,6 +14,8 @@ import {tenNumber} from '../../Transforms/ConvertFromKelvin'
 import _ from 'lodash'
 import {styles} from './styles'
 import { o } from 'ramda'
+import { Colors } from 'react-native/Libraries/NewAppScreen'
+import colors from '../../Themes/Colors'
 
 // const persistConfig = {
 //   key: 'root',
@@ -131,7 +133,7 @@ class LaunchScreen extends React.Component {
     this.props.updatePhoneNumber('value', text)
   }
   renderFailureCard = () => {
-    if (!this.props.packageEmpt) return null
+    if (this.props.packageGetFailed == 1) return null
     return (
       <View
         style={{
@@ -152,16 +154,20 @@ class LaunchScreen extends React.Component {
     if (this.props.packageEmpty) return null
     return (
       <FlatList style={{
-        borderTopRightRadius: 50,
-        borderBottomRightRadius: 50
+        paddingLeft: 10,
+        paddingRight: 10,
+        alignSelf: 'stretch'
+        
+        
       }}
+      ItemSeparatorComponent={() => <View style={{ margin: 10 }} />}
         
       data={this.props.packageList} renderItem={this.renderItem} />
     )
   }
   renderItem = ({item}) => {
     return (
-      <View key={item.productName} style={{backgroundColor: '#e4e4e4'}}>
+      <View key={item.productName}>
         {/* <TouchableOpacity
           onPress={() =>
             this.setState({
@@ -170,25 +176,24 @@ class LaunchScreen extends React.Component {
             })
           }> */}
           <View style={styles.cellItem}>
-            <Text style={styles.title}> {_.get(item, 'productName', '')}</Text>
-            <Text style={styles.title}>
-              {' '}
-              {_.get(item, 'DueAmount', 'No Due')}
+            <View style={{alignContent: 'flex-start'}}>
+            <Text style={styles.title} note> {_.get(item, 'productName', '')} 
             </Text>
-            <View 
-            style={{
-              paddingBottom: 10,
-             marginRight: 0,
-             alignSelf: 'flex-end'
-            }}
-            >
+            <View style={{justifyContent: 'flex-end'}}>
             <TextButton style={styles.checkinButton}
-            buttonName= 'CHECKIN'>
+            buttonName= '-->'>
 
             </TextButton>
             </View>
+            <Text>ValidUpto</Text>
+            <Text style={styles.title}>
+              {_.get(item, 'validdate', 'empty')}
+            </Text>
+             
+            </View>
+            
           </View>
-        {/* </TouchableOpacity> */}
+          
       </View>
     )
   }
@@ -306,10 +311,13 @@ class LaunchScreen extends React.Component {
 const mapStateToProps = state => ({
   isLogin: state.login.isLogin,
   loginFailed: state.login.loginFailed,
+  packageGetFailed: state.login.packagedetails.Flag,
   loader: state.login.loader,
-  validationFailed: state.login.validationFailed,
+  //validationFailed: state.login.validationFailed,
   validPage: state.login.validPage,
   packageEmpty: state.login.packageEmpty,
+  validdate: state.login.validationFailed,
+ 
 //   displayName: state.login.displayName.value,
 //   displayNameError: state.login.displayName.error,
 //   userName: state.login.userName.value,
