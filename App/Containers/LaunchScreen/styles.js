@@ -53,25 +53,34 @@ export const styles = StyleSheet.create({
     overflow: 'hidden'
   },
   checkinButton: {
-    backgroundColor: Colors.rbcblue,
+    flex: 1,
+    alignSelf: 'flex-end',
+    backgroundColor: Colors.rbcwhite,
     borderRadius: 51,
     width: 50,
     height:50,
-    marginBottom:10,
-    alignSelf: 'flex-end',
-   fontSize: 40
+    marginBottom:10
   },
   cellItem: {
-    flex: 1,
+      flex: 4,
+      flexDirection: 'column',
       padding: 8,
       borderRadius: 15,
       overflow: 'hidden',
-      backgroundColor: Colors.steel,
-      alignContent: 'flex-start'
-  
-    
+      backgroundColor: Colors.rbcblue
+      
   },
+  celldetails: {
+    flex: 4,
+    flexDirection: 'row',
+    padding: 8,
+    marginTop: 10,
+    borderRadius: 15,
+    overflow: 'hidden',
+    backgroundColor: Colors.rbcgreen
+    
+},
   title: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   }
 })

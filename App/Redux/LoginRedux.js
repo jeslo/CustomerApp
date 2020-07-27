@@ -21,8 +21,8 @@ const {Types, Creators} = createActions({
   getPackageListFailure: ['data'],
 
   getCheckInRequest: ['params'],
-  getCheckInSuccess: ['data'],
-  getCheckInFailure: [],
+  getCheckInSuccess: ['data','index'],
+  getCheckInFailure: ['data'],
 
   updateFirstLevelKey: ['key', 'value'],
 //   getUpdateDisplayName: ['key', 'value'],
@@ -47,17 +47,19 @@ export const INITIAL_STATE = Immutable({
 //   loginDetails: {},
   validUserDetails: {},
   packagedetails: {},
-  checkinDetails: {},
+  checkinDetails: '',
 
 //   loginFailed: '',
 //   registrationFailed: false,
   validationFailed: '',
   packageGetFailed: '',
+  cellIndex: '',
   validPage: false,
   isLogin: true,
   packageEmpty: false,
   popupFlag: false,
   loader: false,
+  checkinDetailsFlag: false,
 
 //   displayName: {
 //     value: '',
@@ -87,6 +89,7 @@ export const setLoginOrSignupLoader = (state, {data}) =>
   state.merge({
     loader: true
   })
+
 // export const handleLoginSuccess = (state, {data}) =>
 //   state.merge({
 
@@ -140,13 +143,31 @@ export const handlePackageListFailure = (state, {data}) =>
     packageEmpty: true,
     loader: false
   })
-
+  export const setCheckinRequest = (state, {data}) =>
+  state.merge({
+    loader: true
+  })
 export const handleCheckInSuccess = (state, {data}) =>
   state.merge({
+
+      packagedetails: state.packagedetails.merge({
+        Packagedata: state.packagedetails.Packagedata.merge({
+          //  packageItems: state.packagedetails.Packagedata.packageItems.merge({
+          //   //checkinDetailsFlag: true
+          // })
+
+        })
+
+    }),
     checkinDetails: data,
+    checkinDetailsFlag: true,
     loader: false
+    
+
   })
-export const handleCheckInFailure = (state, {data}) => state.merge({})
+export const handleCheckInFailure = (state, {data}) => state.merge({
+  checkinDetails: data
+})
 
 // export const handleupdateDisplayName = (state, {key, value}) =>
 //   state.merge({
@@ -218,7 +239,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_PACKAGE_LIST_SUCCESS]: handlePackageListSuccess,
   [Types.GET_PACKAGE_LIST_FAILURE]: handlePackageListFailure,
 
-  [Types.GET_CHECK_IN_REQUEST]: setLoginOrSignupLoader,
+  [Types.GET_CHECK_IN_REQUEST]: setCheckinRequest,
   [Types.GET_CHECK_IN_SUCCESS]: handleCheckInSuccess,
   [Types.GET_CHECK_IN_FAILURE]: handleCheckInFailure,
 

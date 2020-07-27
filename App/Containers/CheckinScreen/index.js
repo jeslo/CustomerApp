@@ -99,8 +99,8 @@ class CheckinScreen extends React.Component {
               UserId: this.props.gudid,
               UserName: this.props.UserName,
               ProductId: _.get(this.state.item, 'productId', ''),
-              packageName: _.get(this.state.item, 'productName', ''),
-              dueAmount: _.get(this.state.item, 'DueAmount', ''),
+              ProductName: _.get(this.state.item, 'productName', ''),
+              DuesAmount: _.get(this.state.item, 'DueAmount', ''),
               Phone: this.props.Phone,
             })}
             style={styles.button}
@@ -132,12 +132,13 @@ class CheckinScreen extends React.Component {
 const mapStateToProps = state => ({
   packageEmpty: state.login.packageEmpty,
 
-  packageList: _.get(state, 'login.packagedetails.Packagedata.packageItems', [
-    1,
-    2,
-  ]),
+  packageList: _.get(state, 'login.packagedetails.Packagedata.packageItems', [ ]),
+
   gudid: _.get(state, 'login.packagedetails.Packagedata.guId', ''),
   UserName: _.get(state, 'login.packagedetails.Packagedata.userName', ''),
+  productId: _.get(state, 'login.packagedetails.Packagedata.productId', ''),
+  ProductName: _.get(state, 'login.packagedetails.Packagedata.productName', ''),
+  DuesAmount: _.get(state, 'login.packagedetails.Packagedata.DueAmount', ''),
   Phone: _.get(state, 'login.packagedetails.Packagedata.phone', ''),
 })
 const mapDispatchToProps = dispatch => ({

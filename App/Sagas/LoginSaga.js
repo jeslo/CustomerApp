@@ -102,7 +102,7 @@ export function * packageList ({params}) {
     yield put(Actions.getPackageListFailure(result))
   }
 }
-export function * checkIn ({params}) {
+export function * checkIn ({params, index}) {
   const postOptions = {
     method: 'POST',
     headers: {
@@ -115,6 +115,6 @@ export function * checkIn ({params}) {
     .then(resp => resp.json())
     .then(r => r)
     .catch(e => e)
-  if (result.Flag === 1) yield put(Actions.getCheckInSuccess(result))
-  yield put(Actions.getCheckInFailure(result))
+  if (result.Flag === 1) yield put(Actions.getCheckInSuccess(result.Result, index))
+  else yield put(Actions.getCheckInFailure(result.Result))
 }

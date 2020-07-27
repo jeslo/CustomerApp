@@ -42,7 +42,7 @@ export default class InputText extends React.Component {
           value={this.props.value}
           onBlur={this.onBlur}
           secureTextEntry={this.props.password}
-
+          keyboardType= 'number-pad'
         />
         <OptionalView hide={!this.props.error}>
           <Text style={styles.error}>{this.props.error}</Text>
