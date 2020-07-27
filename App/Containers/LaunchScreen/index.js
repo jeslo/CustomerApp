@@ -21,7 +21,7 @@ import InputText from '../../Components/InputText'
 import Loader from '../../Components/Loader'
 import OptionalView from '../../Components/OptionalView'
 import {tenNumber} from '../../Transforms/ConvertFromKelvin'
-import _, { indexOf } from 'lodash'
+import _ from 'lodash'
 import {styles} from './styles'
 import Moment from 'moment'
 console.disableYellowBox = true
@@ -200,9 +200,13 @@ class LaunchScreen extends React.Component {
           <View>
             <Text style={styles.title}>{_.get(item, 'productName', '')}</Text>
 
+          {
+            console.tron.log('>>>>>>hhh>>>',item.checkinDetailsFlag)
+          }
             <TextButton
               style={styles.checkinButton}
-              buttonName={this.props.checkinDetailsFlag ? '✅' : '➤'}
+              //buttonName={_.get(item.checkinDetailsFlag, false) ? '✅' : '➤'}
+              buttonName={item.checkinDetailsFlag ? '✅' : '➤'}
               onPress={this.props.checkInUser({
                 UserId: this.props.gudid,
                 UserName: this.props.UserName,
@@ -371,7 +375,7 @@ const mapStateToProps = state => ({
   validPage: state.login.validPage,
   packageEmpty: state.login.packageEmpty,
   checkinDetails: state.login.checkinDetails,
-  checkinDetailsFlag: state.login.checkinDetailsFlag,
+  
   //validityDate: Moment(state.login.validityDate).format('DD-MM-YYYY'),
   //Moment(state.login.validityDate, "DD/MM/YYYY"),
   //   displayName: state.login.displayName.value,
