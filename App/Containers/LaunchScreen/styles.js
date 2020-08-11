@@ -82,5 +82,9 @@ export const styles = StyleSheet.create({
 },
   title: {
     fontWeight: 'bold',
+  },
+  dailyNews: {
+    fontWeight: 'bold',
+    marginTop: 5
   }
 })

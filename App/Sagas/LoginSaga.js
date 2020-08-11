@@ -12,48 +12,9 @@ const PACKAGE_LIST_URL =
   'http://crmservice.rbcentre.com/api/CRMMobApp/GetPakagesByUser'
 const CHECK_IN_URL =
   'http://crmservice.rbcentre.com/api/CRMMobApp/UserCheckInProcess'
+const DAILY_NEWS_URL =
+  'http://crmservice.rbcentre.com/api/CRMMobApp/GetdailyNewsForCustomer'
 
-// export function * getLoginData ({params}) {
-//   const postOptions = {
-//     method: 'POST',
-//     headers: {
-//       'Content-type': 'application/json',
-//       Accept: 'application/json',
-//     },
-//     body: JSON.stringify(params),
-//   }
-//   const result = yield fetch(LOGIN_URL, postOptions)
-//     .then(resp => resp.json())
-//     .then(r => r)
-//     .catch(e => console.tron.log('>>>>>>eeeee, e'))
-//   // console.warn('>>>', result)
-//   if (result.Flag === 1) {
-//     yield put(Actions.getValidUserRequest({phone: result.Result.phone}))
-//     yield put(NavigationActions.navigate({routeName: 'CheckinScreen'}))
-//   } else {
-//     yield put(Actions.getLoginDetailsFailure(result.Result))
-//   }
-// }
-
-// export function * registerUser ({params}) {
-//   const postOptions = {
-//     method: 'POST',
-//     headers: {
-//       'Content-type': 'application/json',
-//       Accept: 'application/json',
-//     },
-//     body: JSON.stringify(params),
-//   }
-//   const result = yield fetch(REGISTER_URL, postOptions)
-//     .then(resp => resp.json())
-//     .then(r => r)
-//     .catch(e => e)
-//   if (result.Flag === 1) {
-//     yield put(Actions.registerUserSuccess(result))
-//   } else return yield put(Actions.registerUserFailure(_.get(result, 'Result.guId', '')))
-
-//   console.tron.log('>>>>rsponse', result)
-// }
 
 export function * validateUser ({params}) {
   const postOptions = {
@@ -117,4 +78,23 @@ export function * checkIn ({params, index}) {
     .catch(e => e)
   if (result.Flag === 1) yield put(Actions.getCheckInSuccess(result.Result, index))
   else yield put(Actions.getCheckInFailure(result.Result))
+}
+
+export function * dailyNews() {
+  const postOptions = {
+    method: 'GET',
+    headers: {
+      'Content-type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify(),
+  }
+  const result = yield fetch(DAILY_NEWS_URL, postOptions)
+    .then(resp => resp.json())
+    .then(r => r)
+    .catch(e => console.tron.log('>>>>>>eeeee, e'))
+  if (result.Flag === 1) {
+    yield put(Actions.getDailyNewsSuccess(result))
+  } 
+  else return yield put(Actions.getDailyNewsFailure(result))
 }

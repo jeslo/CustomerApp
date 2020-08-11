@@ -24,6 +24,10 @@ const {Types, Creators} = createActions({
   getCheckInSuccess: ['data', 'index'],
   getCheckInFailure: ['data'],
 
+  getDailyNewsRequest: ['data'],
+  getDailyNewsSuccess: ['data'],
+  getDailyNewsFailure: ['data'],
+
   updateFirstLevelKey: ['key', 'value'],
   //   getUpdateDisplayName: ['key', 'value'],
   //   getUpdateUserName: ['key', 'value'],
@@ -43,17 +47,17 @@ export default Creators
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  //   registerDetails: {},
-  //   loginDetails: {},
   validUserDetails: {},
   packagedetails: {},
-  checkinDetails: '',
+  dailyNews: {},
 
-  //   loginFailed: '',
-  //   registrationFailed: false,
+  dailyNewsFailed: '',
+  checkinDetails: '',
   validationFailed: '',
   packageGetFailed: '',
   cellIndex: '',
+  
+
   validPage: false,
   isLogin: true,
   packageEmpty: false,
@@ -61,22 +65,6 @@ export const INITIAL_STATE = Immutable({
   loader: false,
   checkinDetailsFlag: false,
 
-  //   displayName: {
-  //     value: '',
-  //     error: '',
-  //   },
-  //   userName: {
-  //     value: '',
-  //     error: '',
-  //   },
-  //   password: {
-  //     value: '',
-  //     error: '',
-  //   },
-  //   email: {
-  //     value: '',
-  //     error: '',
-  //   },
   phone: {
     value: '',
     error: '',
@@ -89,32 +77,6 @@ export const setLoginOrSignupLoader = (state, {data}) =>
   state.merge({
     loader: true,
   })
-
-// export const handleLoginSuccess = (state, {data}) =>
-//   state.merge({
-
-//     loginFailed: data,
-//     loader: false
-//   })
-// export const getLoginDetailsFailure = (state, {data}) =>
-//   state.merge({
-//     loginFailed: data,
-//     loader: false
-//   })
-
-// export const handleRegistrationSuccess = (state, {data}) =>
-//   state.merge({
-//     loginLoader: false,
-//     isLogin: true,
-//     loader: false
-//   })
-// export const registerUserFailure = (state, {data}) =>
-//   state.merge({
-//     registrationFailed: true,
-//     loginFailed: data,
-//     isLogin: false,
-//     loader: false
-//   })
 
 export const handleValidUserSuccess = (state, {data}) =>
   state.merge({
@@ -172,34 +134,6 @@ export const handleCheckInFailure = (state, {data}) =>
     checkinDetails: data,
   })
 
-// export const handleupdateDisplayName = (state, {key, value}) =>
-//   state.merge({
-//     displayName: state.displayName.merge({
-//       [key]: value,
-//       error: key === 'error' ? value : '',
-//     }),
-//   })
-// export const handleupdateUserName = (state, {key, value}) =>
-//   state.merge({
-//     userName: state.userName.merge({
-//       [key]: value,
-//       error: key === 'error' ? value : '',
-//     }),
-//   })
-// export const handleupdatePassword = (state, {key, value}) =>
-//   state.merge({
-//     password: state.password.merge({
-//       [key]: value,
-//       error: key === 'error' ? value : '',
-//     }),
-//   })
-// export const handleupdateEmail = (state, {key, value}) =>
-//   state.merge({
-//     email: state.email.merge({
-//       [key]: value,
-//       error: key === 'error' ? value : '',
-//     }),
-//   })
 export const handleupdatePhone = (state, {key, value}) =>
   state.merge({
     phone: state.phone.merge({
@@ -212,6 +146,19 @@ export const handleGetLogin = (state, {status}) =>
   state.merge({
     isLogin: status,
     loginFailed: false,
+  })
+
+export const setDailyNewsRequest = (state) =>
+  state.merge({
+   
+  })
+export const handleDailyNewsSuccess = (state, {data}) =>
+  state.merge({
+    dailyNews: data
+  })
+export const handleDailyNewsFailure = (state, {data}) =>
+  state.merge({
+    dailyNewsFailed: data
   })
 export const handlePopup = state =>
   state.merge({
@@ -256,4 +203,10 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SET_LOGIN_FLAG]: handleGetLogin,
   [Types.LOGOUT_USER]: handleLogoutUser,
   [Types.POPUP_CARD]: handlePopup,
+
+  [Types.GET_DAILY_NEWS_REQUEST]: setDailyNewsRequest,
+  [Types.GET_DAILY_NEWS_SUCCESS]: handleDailyNewsSuccess,
+  [Types.GET_DAILY_NEWS_FAILURE]: handleDailyNewsFailure
+  
+
 })

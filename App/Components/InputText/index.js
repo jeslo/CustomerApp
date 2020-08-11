@@ -5,7 +5,6 @@ import OptionalView from '../../Components/OptionalView'
 const styles = {
   textInput: {
     borderRadius: 10,
-    // borderRadius: 44,
     minHeight: 44,
     marginBottom: 5,
     paddingHorizontal: 20,

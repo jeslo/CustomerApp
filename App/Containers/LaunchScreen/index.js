@@ -2,13 +2,11 @@ import React from 'react'
 import {
   View,
   Text,
-  TouchableOpacity,
   Image,
   ScrollView,
   SafeAreaView,
   BackHandler,
   FlatList,
-  Alert
 } from 'react-native'
 import {connect} from 'react-redux'
 import Actions from '../../Redux/LoginRedux'
@@ -37,13 +35,15 @@ class LaunchScreen extends React.Component {
   state = {
     show: false,
     item: {},
+    newsitem: {},
   }
   onBackPress = () => {
     return true
   }
-  
+
   componentDidMount () {
     BackHandler.addEventListener('hardwareBackPress', this.onBackPress)
+    this.props.dailyNews()
   }
 
   componentWillUnmount () {
@@ -75,24 +75,6 @@ class LaunchScreen extends React.Component {
   //     )
   //   }
 
-  //   fetchSignUp = () => {
-  //     if (!this.validateSignUp()) return
-  //     this.props.registerUser({
-  //       DisplayName: this.props.displayName,
-  //       UserName: this.props.userName,
-  //       Phone: this.props.phone,
-  //       Password: this.props.password,
-  //       Email: this.props.email,
-  //     })
-  //   }
-
-  //   validateEmail = () => {
-  //     if (!this.props.email)
-  //       return this.props.updateEmailId('error', 'Enter email')
-  //     if (!email(this.props.email)) {
-  //       this.props.updateEmailId('error', 'invalid email')
-  //     }
-  //   }
   validatePhone = () => {
     if (!this.props.phone)
       return this.props.updatePhoneNumber('error', 'Enter Phone number')
@@ -100,41 +82,6 @@ class LaunchScreen extends React.Component {
       this.props.updatePhoneNumber('error', 'invalid phone number')
     }
   }
-  //   validatePassword = () => {
-  //     if (!empty(this.props.password)) {
-  //       this.props.updatePassword('error', 'Password can not be empty')
-  //     }
-  //   }
-  //   validateUsername = () => {
-  //     if (!this.props.userName)
-  //       return this.props.updateUserName('error', 'Enter username')
-  //     if (!name(this.props.userName)) {
-  //       this.props.updateUserName('error', 'Enter a valid user name')
-  //     }
-  //   }
-
-  //   validateDisplayName = () => {
-  //     if (!this.props.displayName) {
-  //       this.props.updateDisplayName('error', 'Enter display name')
-  //     }
-  //   }
-
-  //   onChangeDisplayName = text => {
-  //     this.props.updateFirstLevelKey('loginFailed', '')
-  //     this.props.updateDisplayName('value', text)
-  //   }
-  //   onChangeUserName = text => {
-  //     this.props.updateFirstLevelKey('loginFailed', '')
-  //     this.props.updateUserName('value', text)
-  //   }
-  //   onChangePassword = text => {
-  //     this.props.updateFirstLevelKey('loginFailed', '')
-  //     this.props.updatePassword('value', text)
-  //   }
-  //   onChangeEmail = text => {
-  //     this.props.updateFirstLevelKey('loginFailed', '')
-  //     this.props.updateEmailId('value', text)
-  //   }
 
   onChangePhoneNumber = text => {
     this.props.updateFirstLevelKey('validationFailed', '')
@@ -189,41 +136,31 @@ class LaunchScreen extends React.Component {
 
     return (
       <View key={item.productName}>
-        {/* <TouchableOpacity
-          onPress={() =>
-            this.setState({
-              show: true,
-              item,
-            })
-          }> */}
         <View style={styles.cellItem}>
           <View>
             <Text style={styles.title}>{_.get(item, 'productName', '')}</Text>
-
-          {
-            console.tron.log('>>>>>>hhh>>>',item.checkinDetailsFlag)
-          }
             <TextButton
               style={styles.checkinButton}
               //buttonName={_.get(item.checkinDetailsFlag, false) ? '✅' : '➤'}
               buttonName={item.checkinDetailsFlag ? '✅' : '➤'}
-              onPress={this.props.checkInUser({
-                UserId: this.props.gudid,
-                UserName: this.props.UserName,
-                ProductId: _.get(item, 'productId', ''),
-                ProductName: _.get(item, 'productName', ''),
-                DuesAmount: _.get(item, 'DueAmount', ''),
-                Phone: this.props.Phone,
-                
-              },index)}
-              ></TextButton>
+              onPress={this.props.checkInUser(
+                {
+                  UserId: this.props.gudid,
+                  UserName: this.props.UserName,
+                  ProductId: _.get(item, 'productId', ''),
+                  ProductName: _.get(item, 'productName', ''),
+                  DuesAmount: _.get(item, 'DueAmount', ''),
+                  Phone: this.props.Phone,
+                },
+                index,
+              )}></TextButton>
 
             <View style={{flexDirection: 'row'}}>
               <Text>
                 ValidUpto
                 <Text style={{marginLeft: 100}}>
                   {' '}
-                  {'\t\t\t\t Last Chekcin'}
+                  {'\t\t\t\t Last Chekc In'}
                 </Text>
               </Text>
             </View>
@@ -253,44 +190,6 @@ class LaunchScreen extends React.Component {
                 }}
               />
               <View style={styles.signUPbox}>
-                {/* <OptionalView hide={this.props.isLogin}>
-                <InputText
-                  onChangeText={this.onChangeDisplayName}
-                  placeholder='Enter Display Name'
-                  value={this.props.displayName}
-                  error={this.props.displayNameError}
-                  onBlur={this.validateName}
-                />
-              </OptionalView>
-              <InputText
-                onChangeText={this.onChangeUserName}
-                // onChangeText={this.onChangeText('userName')}
-                placeholder='Enter UserName'
-                value={this.props.userName}
-                error={this.props.userNameError}
-                onBlur={this.validateUsername}
-              />
-              <InputText
-                // onChangeText={this.onChangeText('password')}
-                onChangeText={this.onChangePassword}
-                placeholder={'Enter Password'}
-                value={this.props.password}
-                textContentType='password'
-                onBlur={this.validatePassword}
-                error={this.props.passwordError}
-                password
-              /> */}
-                {/* <OptionalView hide={this.props.isLogin}>
-                <InputText
-                  // onChangeText={this.onChangeText('email')}
-                  onChangeText={this.onChangeEmail}
-                  placeholder={'Enter Email_ID'}
-                  value={this.props.email}
-                  onBlur={this.validateEmail}
-                  error={this.props.emailError}
-                />
-              </OptionalView>
-              <OptionalView hide={this.props.isLogin}> */}
                 <InputText
                   onChangeText={this.onChangePhoneNumber}
                   placeholder={'Enter PhoneNumber'}
@@ -299,8 +198,6 @@ class LaunchScreen extends React.Component {
                   error={this.props.phoneError}
                   keyboardType
                 />
-                {/* </OptionalView> */}
-
                 <OptionalView hide={!this.props.validationFailed}>
                   <Text style={styles.errorText}>
                     {this.props.validationFailed}
@@ -312,20 +209,32 @@ class LaunchScreen extends React.Component {
                 <TextButton
                   buttonName={'SUBMIT'}
                   onPress={this.fetchLogin}></TextButton>
-
-                {/* {this.props.isLogin ? (
-                <TouchableOpacity onPress={this.props.setLoginStatus(false)}>
-                  <Text style={styles.text}>
-                    New member click here to Signup
+              </View>
+              <View style={{flex: 1}}>
+                <View style={{flex: 1, flexDirection: 'row', marginBottom: 5}}>
+                  <Image
+                    source={require('./Images/bell.png')}
+                    style={{
+                      height: 20,
+                      width: 20,
+                      resizeMode: 'contain',
+                      marginRight: 5,
+                    }}
+                  />
+                  <Text>Daily Updates</Text>
+                </View>
+                <OptionalView hide={!this.props.dailyNewsDataFailed.result}>
+                  <Text style={styles.errorText}>
+                    {this.props.dailyNewsDataFailed.result}
                   </Text>
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity onPress={this.props.setLoginStatus(true)}>
-                  <Text style={styles.text}>
-                    Haven an account click here to Login
-                  </Text>
-                </TouchableOpacity>
-              )} */}
+                </OptionalView>
+                <OptionalView hide={!this.props.dailyNewsData.result}>
+                  <ul>
+                    {this.props.dailyNewsData.map(d => (
+                      <li key={d.news}>{d.news}</li>
+                    ))}
+                  </ul>
+                </OptionalView>
               </View>
             </View>
           </OptionalView>
@@ -338,21 +247,22 @@ class LaunchScreen extends React.Component {
                   paddingBottom: 10,
                   paddingTop: 10,
                   flex: 1,
-                  flexDirection: 'row',
+                  flexDirection: 'row-reverse',
                 }}>
                 <TextButton
                   buttonName='Logout'
                   onPress={this.logOut}></TextButton>
-                {/* <View
+                <Text
                   style={{
-                    backgroundColor: 'red',
-                    width: 100,
+                    paddingTop: 15,
+                    paddingLeft: 15,
+                    fontWeight: 'bold',
+                    flex: 1,
+                    flexDirection: 'row',
                   }}>
-                  <Text style={{paddingTop: 15, paddingLeft: 15}}>
-                    Welcome {'\t'}
-                    {this.props.UserName}
-                  </Text>
-                </View> */}
+                  Welcome &nbsp;
+                  {this.props.UserName}
+                </Text>
               </View>
 
               <this.CheckinLoader />
@@ -375,17 +285,9 @@ const mapStateToProps = state => ({
   validPage: state.login.validPage,
   packageEmpty: state.login.packageEmpty,
   checkinDetails: state.login.checkinDetails,
-  
-  //validityDate: Moment(state.login.validityDate).format('DD-MM-YYYY'),
-  //Moment(state.login.validityDate, "DD/MM/YYYY"),
-  //   displayName: state.login.displayName.value,
-  //   displayNameError: state.login.displayName.error,
-  //   userName: state.login.userName.value,
-  //   userNameError: state.login.userName.error,
-  //   password: state.login.password.value,
-  //   passwordError: state.login.password.error,
-  //   email: state.login.email.value,
-  //   emailError: state.login.email.error,
+  dailyNewsDataFailed: state.login.dailyNewsFailed,
+  dailyNewsData: _.get(state, 'login.dailyNews.result', []),
+
   phone: state.login.phone.value,
   phoneError: state.login.phone.error,
   packageList: _.get(
@@ -403,22 +305,17 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  //registerUser: params => dispatch(Actions.registerUserRequest(params)),
   validateUser: params => dispatch(Actions.getValidUserRequest(params)),
-  //   updateDisplayName: (key, value) =>
-  //     dispatch(Actions.getUpdateDisplayName(key, value)),
-  //   updateUserName: (key, value) =>
-  //     dispatch(Actions.getUpdateUserName(key, value)),
-  //   updatePassword: (key, value) =>
-  //   dispatch(Actions.getUpdatePassword(key, value)),
   updatePhoneNumber: (key, value) =>
     dispatch(Actions.getUpdatePhoneNumber(key, value)),
-  //updateEmailId: (key, value) => dispatch(Actions.getUpdateEmail(key, value)),
   updateFirstLevelKey: (key, value) =>
     dispatch(Actions.updateFirstLevelKey(key, value)),
   logOut: () => dispatch(Actions.logoutUser()),
-  checkInUser: (params,index) => () => dispatch(Actions.getCheckInRequest(params,index)),
+  checkInUser: (params, index) => () =>
+    dispatch(Actions.getCheckInRequest(params, index)),
   setLoginStatus: value => () => dispatch(Actions.setLoginFlag(value)),
+
+  dailyNews: () => dispatch(Actions.getDailyNewsRequest()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(LaunchScreen)
