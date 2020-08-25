@@ -35,7 +35,7 @@ class LaunchScreen extends React.Component {
   state = {
     show: false,
     item: {},
-    newsitem: {},
+    newsItem: {},
   }
   onBackPress = () => {
     return true
@@ -53,6 +53,7 @@ class LaunchScreen extends React.Component {
   logOut = () => {
     this.props.navigation.goBack()
     this.props.logOut()
+    this.props.dailyNews()
   }
   fetchLogin = () => {
     this.props.validateUser({
@@ -175,7 +176,6 @@ class LaunchScreen extends React.Component {
     )
   }
   render () {
-    console.tron.log(' this.props.', this.props)
     return (
       <View style={{flex: 1}}>
         <ScrollView>
@@ -210,7 +210,9 @@ class LaunchScreen extends React.Component {
                   buttonName={'SUBMIT'}
                   onPress={this.fetchLogin}></TextButton>
               </View>
-              <View style={{flex: 1}}>
+              
+            </View>
+            <View style={styles.dailyNewsBox}>
                 <View style={{flex: 1, flexDirection: 'row', marginBottom: 5}}>
                   <Image
                     source={require('./Images/bell.png')}
@@ -228,17 +230,21 @@ class LaunchScreen extends React.Component {
                     {this.props.dailyNewsDataFailed.result}
                   </Text>
                 </OptionalView>
-                <OptionalView hide={!this.props.dailyNewsData.result}>
-                  <ul>
-                    {this.props.dailyNewsData.map(d => (
-                      <li key={d.news}>{d.news}</li>
-                    ))}
-                  </ul>
+                <OptionalView hide={this.props.dailyNewsData.result}>
+                  {this.props.dailyNewsData.map(newsItem => (
+                    <Text>{'\n'}  ○ {newsItem.news} </Text>
+                  ))}
                 </OptionalView>
               </View>
-            </View>
           </OptionalView>
-
+          <ScrollView>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}></View>
+          </ScrollView>
           <OptionalView hide={!this.props.validPage}>
             <SafeAreaView>
               <View
@@ -287,7 +293,6 @@ const mapStateToProps = state => ({
   checkinDetails: state.login.checkinDetails,
   dailyNewsDataFailed: state.login.dailyNewsFailed,
   dailyNewsData: _.get(state, 'login.dailyNews.result', []),
-
   phone: state.login.phone.value,
   phoneError: state.login.phone.error,
   packageList: _.get(
@@ -295,7 +300,7 @@ const mapStateToProps = state => ({
     'login.packagedetails.Packagedata.packageItems',
     [],
   ),
-
+  newses: _.get(state, 'login.dailyNews.result[0].news', ''),
   gudid: _.get(state, 'login.packagedetails.Packagedata.guId', ''),
   UserName: _.get(state, 'login.packagedetails.Packagedata.userName', ''),
   productId: _.get(state, 'login.packagedetails.Packagedata.productId', ''),

@@ -2,11 +2,9 @@ import {StyleSheet} from 'react-native'
 import {Colors, Fonts} from '../../Themes'
 export const styles = StyleSheet.create({
   conatiner: {
-    // flex: 1,
-    // padding: 20,
     backgroundColor: '#ffffff',
     alignItems: 'center',
-    marginTop: 250
+    marginTop: 200
   },
   scroll: {
     backgroundColor: Colors.cloud,
@@ -86,5 +84,9 @@ export const styles = StyleSheet.create({
   dailyNews: {
     fontWeight: 'bold',
     marginTop: 5
+  },
+  dailyNewsBox: {
+    padding: 20,
+   
   }
 })

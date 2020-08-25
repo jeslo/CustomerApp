@@ -97,6 +97,8 @@ export const handlePackageListSuccess = (state, {data}) =>
     validPage: true,
     packageEmpty: false,
     loader: false,
+    dailyNews: ''
+   
   })
 export const handlePackageListFailure = (state, {data}) =>
   state.merge({
